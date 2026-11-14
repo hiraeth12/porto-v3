@@ -191,7 +191,7 @@ export default function Home() {
             initial="hidden"
             animate="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.18 }}
+            viewport={{ once: true, amount: 0.18 }}
             variants={sectionReveal}
             transition={sectionRevealTransition}
           >
@@ -298,7 +298,7 @@ export default function Home() {
             initial="hidden"
             animate="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.18 }}
+            viewport={{ once: true, amount: 0.18 }}
             variants={sectionReveal}
             transition={sectionRevealTransition}
           >
@@ -327,7 +327,7 @@ export default function Home() {
             initial="hidden"
             animate="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.12 }}
+            viewport={{ once: true, amount: 0.12 }}
             variants={sectionReveal}
             transition={sectionRevealTransition}
           >
@@ -348,7 +348,7 @@ export default function Home() {
             initial="hidden"
             animate="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.2 }}
             variants={sectionReveal}
             transition={sectionRevealTransition}
           >
