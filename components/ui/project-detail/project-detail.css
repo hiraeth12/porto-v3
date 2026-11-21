@@ -1,0 +1,730 @@
+/* Scoped styles for Project Detail Showcase Page (pd-*)
+ * Adapts the SeismoTrack reference layout to Sahrul's portfolio design system:
+ * Double-Bezel (Doppelrand) hardware enclosures, editorial typography, Button-in-Button CTAs,
+ * and full Light/Dark theme parity.
+ */
+
+.pd-page-shell {
+  min-height: 100dvh;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 3.5vw, 44px) var(--section-padding-inline) clamp(64px, 9vh, 112px);
+  background: var(--portfolio-paper);
+  color: var(--portfolio-ink);
+  font-family: var(--portfolio-body, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Top Ambient Navigation & Breadcrumb Bar */
+.pd-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: var(--portfolio-content-width);
+  margin: 0 auto clamp(28px, 4.5vh, 48px);
+}
+
+.pd-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.pd-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 15px 6px 6px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--card) 82%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition:
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-back-btn:hover {
+  background: var(--card);
+  border-color: var(--portfolio-ink);
+}
+
+.pd-back-btn:active {
+  transform: scale(0.97);
+}
+
+.pd-back-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--portfolio-ink) 8%, transparent);
+  color: var(--foreground);
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-back-btn:hover .pd-back-icon {
+  transform: translateX(-2px);
+}
+
+.pd-breadcrumbs {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.pd-breadcrumb-link {
+  color: var(--muted-foreground);
+  text-decoration: none;
+  transition: color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-breadcrumb-link:hover {
+  color: var(--foreground);
+}
+
+.pd-breadcrumb-sep {
+  opacity: 0.45;
+  font-size: 11px;
+  user-select: none;
+}
+
+.pd-breadcrumb-current {
+  color: var(--foreground);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pd-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+  background: color-mix(in oklab, var(--card) 82%, transparent);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-theme-toggle:hover {
+  background: var(--card);
+  border-color: var(--portfolio-ink);
+}
+
+.pd-theme-toggle:active {
+  transform: scale(0.97);
+}
+
+/* Main Split Grid (SeismoTrack Reference Structure Adapted to Portfolio) */
+.pd-main-container {
+  width: 100%;
+  max-width: var(--portfolio-content-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(32px, 4.5vw, 64px);
+  align-items: start;
+}
+
+.pd-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 3.2vh, 34px);
+  min-width: 0;
+}
+
+.pd-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(22px, 3vh, 30px);
+  min-width: 0;
+}
+
+/* Eyebrow Meta Pill */
+.pd-eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pd-eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--portfolio-accent) 12%, var(--card));
+  border: 1px solid color-mix(in oklab, var(--portfolio-accent) 28%, var(--border));
+  color: var(--portfolio-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pd-date-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--muted) 75%, transparent);
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Heading & Editorial Accent Bar */
+.pd-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pd-title {
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+  color: var(--foreground);
+  text-wrap: balance;
+}
+
+.pd-title-accent-bar {
+  width: 84px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--portfolio-accent) 0%,
+    color-mix(in oklab, var(--portfolio-accent) 35%, transparent) 100%
+  );
+}
+
+.pd-description {
+  margin: 0;
+  font-size: clamp(1rem, 1.18vw, 1.125rem);
+  line-height: 1.68;
+  color: var(--muted-foreground);
+  max-width: 58ch;
+}
+
+/* Double-Bezel Summary Metrics Grid (Total Technologies & Key Features) */
+.pd-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.pd-bezel-shell {
+  padding: 5px;
+  border-radius: calc(var(--radius) + 12px);
+  background: color-mix(in oklab, var(--card) 62%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  box-shadow:
+    0 20px 50px -22px color-mix(in oklab, var(--portfolio-ink) 18%, transparent),
+    inset 0 1px 0 0 color-mix(in oklab, var(--portfolio-surface) 65%, transparent);
+}
+
+:root[data-theme="dark"] .pd-bezel-shell,
+.dark .pd-bezel-shell {
+  box-shadow:
+    0 24px 60px -24px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+}
+
+.pd-metrics-grid > .pd-bezel-shell {
+  display: flex;
+}
+
+.pd-metric-card {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: calc(var(--radius) + 7px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-metric-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--portfolio-accent) 45%, var(--border));
+}
+
+.pd-metric-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in oklab, var(--portfolio-accent) 12%, var(--muted));
+  color: var(--portfolio-accent);
+  border: 1px solid color-mix(in oklab, var(--portfolio-accent) 24%, transparent);
+}
+
+.pd-metric-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.pd-metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.pd-metric-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Action CTA Row — Button-in-Button Pattern */
+.pd-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pd-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 6px 6px 20px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-cta-btn:active {
+  transform: scale(0.97);
+}
+
+.pd-cta-btn--primary {
+  background: var(--portfolio-ink);
+  color: var(--portfolio-paper);
+  border: 1px solid var(--portfolio-ink);
+  box-shadow: 0 12px 28px -12px color-mix(in oklab, var(--portfolio-ink) 35%, transparent);
+}
+
+.pd-cta-btn--primary:hover {
+  box-shadow: 0 16px 34px -10px color-mix(in oklab, var(--portfolio-ink) 45%, transparent);
+}
+
+.pd-cta-btn--secondary {
+  background: var(--card);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 22px -12px color-mix(in oklab, var(--portfolio-ink) 16%, transparent);
+}
+
+.pd-cta-btn--secondary:hover {
+  border-color: var(--portfolio-ink);
+}
+
+.pd-cta-icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-cta-btn--primary .pd-cta-icon-circle {
+  background: color-mix(in oklab, var(--portfolio-paper) 16%, transparent);
+  color: var(--portfolio-paper);
+}
+
+.pd-cta-btn--secondary .pd-cta-icon-circle {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.pd-cta-btn:hover .pd-cta-icon-circle {
+  transform: translate(2px, -2px) scale(1.04);
+}
+
+/* Technologies Used Section */
+.pd-tech-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 4px;
+}
+
+.pd-section-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--foreground);
+}
+
+.pd-section-heading-icon {
+  color: var(--portfolio-accent);
+  display: inline-flex;
+  align-items: center;
+}
+
+.pd-tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pd-tech-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-tech-pill:hover {
+  transform: translateY(-2px);
+  border-color: var(--portfolio-accent);
+  background: color-mix(in oklab, var(--portfolio-accent) 8%, var(--card));
+}
+
+.pd-tech-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--portfolio-accent);
+  opacity: 0.8;
+}
+
+/* Right Column: Screenshot Showcase Frame (No Zoom Modal) */
+.pd-gallery-core {
+  display: flex;
+  flex-direction: column;
+  border-radius: calc(var(--radius) + 7px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.pd-gallery-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: color-mix(in oklab, var(--muted) 65%, var(--card));
+  overflow: hidden;
+}
+
+.pd-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-gallery-stage:hover .pd-gallery-img {
+  transform: scale(1.02);
+}
+
+.pd-gallery-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, #16252c 0%, #a3201a 55%, #ff8a5c 100%);
+}
+
+.pd-gallery-caption-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 94%, var(--muted));
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.pd-gallery-thumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  overflow-x: auto;
+}
+
+.pd-gallery-thumb-btn {
+  position: relative;
+  width: 68px;
+  height: 44px;
+  border-radius: 6px;
+  padding: 0;
+  border: 2px solid transparent;
+  background: var(--muted);
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0.62;
+  transition:
+    opacity 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-gallery-thumb-btn:hover {
+  opacity: 0.9;
+}
+
+.pd-gallery-thumb-btn[data-active="true"] {
+  opacity: 1;
+  border-color: var(--portfolio-accent);
+  transform: translateY(-1px);
+}
+
+.pd-gallery-thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Right Column: Key Features Card */
+.pd-features-core {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(20px, 2.6vw, 28px);
+  border-radius: calc(var(--radius) + 7px);
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+.pd-features-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 75%, transparent);
+}
+
+.pd-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pd-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--muted) 42%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 65%, transparent);
+  transition:
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-feature-item:hover {
+  background: color-mix(in oklab, var(--muted) 68%, transparent);
+  border-color: color-mix(in oklab, var(--portfolio-accent) 38%, var(--border));
+}
+
+.pd-feature-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--portfolio-accent);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.pd-feature-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.pd-feature-title {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  line-height: 1.35;
+}
+
+.pd-feature-desc {
+  margin: 0;
+  font-size: 12.75px;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+
+/* Mobile Responsive Collapse (< 768px) */
+@media (max-width: 767px) {
+  .pd-page-shell {
+    padding: 16px 16px 48px;
+  }
+
+  .pd-top-bar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pd-nav-left {
+    display: contents;
+  }
+
+  .pd-back-btn {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+
+  .pd-theme-toggle {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .pd-breadcrumbs {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    padding-left: 4px;
+    font-size: 12.5px;
+  }
+
+  .pd-main-container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .pd-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .pd-metric-card {
+    padding: 12px 12px;
+    gap: 9px;
+  }
+
+  .pd-metric-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+
+  .pd-metric-value {
+    font-size: 1.2rem;
+  }
+
+  .pd-metric-label {
+    font-size: 11px;
+    white-space: normal;
+    line-height: 1.25;
+  }
+
+  .pd-actions-row {
+    width: 100%;
+  }
+
+  .pd-cta-btn {
+    flex: 1 1 auto;
+    justify-content: space-between;
+  }
+}

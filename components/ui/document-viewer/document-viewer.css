@@ -1,0 +1,573 @@
+/* Scoped styles for Interactive Document Viewer (dv-*)
+ * Uses existing portfolio design tokens from app/globals.css exclusively.
+ */
+
+.dv-portal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 2.5vw, 32px);
+  font-family: var(--portfolio-body, ui-sans-serif, system-ui, sans-serif);
+  color: var(--card-foreground);
+  isolation: isolate;
+}
+
+.dv-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgba(9, 9, 11, 0.66);
+  backdrop-filter: blur(16px) saturate(125%);
+  -webkit-backdrop-filter: blur(16px) saturate(125%);
+}
+
+:root[data-theme="dark"] .dv-backdrop,
+.dark .dv-backdrop {
+  background: rgba(5, 5, 7, 0.78);
+}
+
+/* Outer Double-Bezel tray matching the tactile GlassFolder hardware feel */
+.dv-bezel {
+  position: relative;
+  display: flex;
+  width: min(1120px, 94vw);
+  height: min(90svh, 960px);
+  padding: 6px;
+  border-radius: calc(var(--radius) + 14px);
+  background: color-mix(in oklab, var(--card) 72%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  box-shadow:
+    0 32px 80px -24px color-mix(in oklab, var(--portfolio-ink) 42%, transparent),
+    0 2px 6px 0 color-mix(in oklab, var(--portfolio-ink) 10%, transparent),
+    inset 0 1px 0 0 color-mix(in oklab, var(--portfolio-surface) 65%, transparent);
+  will-change: transform, opacity;
+}
+
+.dv-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: calc(var(--radius) + 8px);
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+}
+
+/* Header / Top Toolbar */
+.dv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px 12px 20px;
+  background: color-mix(in oklab, var(--card) 92%, var(--muted));
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  z-index: 5;
+}
+
+.dv-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.dv-kind-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  border-radius: calc(var(--radius) - 2px);
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  flex-shrink: 0;
+  border: 1px solid color-mix(in oklab, var(--ring) 24%, transparent);
+}
+
+.dv-titles {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.dv-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dv-meta {
+  font-size: 11.5px;
+  line-height: 1.2;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Toolbar Controls */
+.dv-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dv-toolbar-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.dv-divider {
+  width: 1px;
+  height: 18px;
+  margin: 0 3px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.dv-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 9px;
+  border-radius: calc(var(--radius) - 1px);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  transition:
+    background-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dv-btn--icon {
+  padding: 0;
+  width: 34px;
+}
+
+.dv-btn:hover:not(:disabled) {
+  background: var(--card);
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+.dv-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.dv-btn[data-active="true"] {
+  background: var(--card);
+  color: var(--foreground);
+  border-color: var(--border);
+  box-shadow: 0 1px 2px 0 color-mix(in oklab, var(--portfolio-ink) 8%, transparent);
+}
+
+.dv-btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.dv-btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.dv-btn--primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0 12px;
+}
+
+.dv-btn--primary:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--primary) 88%, var(--portfolio-accent));
+  color: var(--primary-foreground);
+  border-color: transparent;
+}
+
+.dv-btn--close {
+  background: var(--muted);
+  border-color: var(--border);
+}
+
+.dv-btn--close:hover:not(:disabled) {
+  background: var(--secondary);
+}
+
+.dv-readout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+  text-align: center;
+  user-select: none;
+}
+
+.dv-readout--page {
+  min-width: 68px;
+}
+
+.dv-readout-muted {
+  color: var(--muted-foreground);
+  font-weight: 400;
+  margin: 0 3px;
+}
+
+/* Main Document Stage */
+.dv-stage {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: var(--muted);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* PDF Scroll Container — native scroll enabled even though globals.css hides scrollbars */
+.dv-pdf-scroll {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+  padding: clamp(16px, 3vw, 36px) clamp(12px, 2.5vw, 32px) clamp(76px, 8vh, 96px);
+}
+
+.dv-pdf-document {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  min-width: min-content;
+  margin: 0 auto;
+}
+
+.dv-pdf-page-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #09090b;
+  border-radius: calc(var(--radius) - 2px);
+  box-shadow:
+    0 12px 32px -12px color-mix(in oklab, var(--portfolio-ink) 22%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--portfolio-ink) 10%, transparent);
+  overflow: hidden;
+  transition: box-shadow 220ms ease;
+}
+
+.dv-pdf-page-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  z-index: 4;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--card) 86%, transparent);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 10.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+/* Image Viewer Stage */
+.dv-image-stage {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+}
+
+.dv-image-stage[data-zoomed="true"] {
+  cursor: grab;
+}
+
+.dv-image-stage[data-zoomed="true"]:active {
+  cursor: grabbing;
+}
+
+.dv-transform-wrapper {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.dv-transform-content {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: clamp(16px, 3vw, 40px);
+}
+
+.dv-image-el {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: calc(var(--radius) - 2px);
+  box-shadow:
+    0 20px 48px -18px color-mix(in oklab, var(--portfolio-ink) 32%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--border) 65%, transparent);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Loading & Error States */
+.dv-state-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--muted);
+  text-align: center;
+}
+
+.dv-skeleton-sheet {
+  width: min(460px, 78vw);
+  aspect-ratio: 1 / 1.38;
+  max-height: 68%;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 12px 32px -16px color-mix(in oklab, var(--portfolio-ink) 18%, transparent);
+  animation: dv-pulse 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.dv-skeleton-sheet--landscape {
+  width: min(560px, 82vw);
+  aspect-ratio: 4 / 3;
+}
+
+.dv-skeleton-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--muted);
+}
+
+.dv-state-label {
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.dv-error-card {
+  max-width: 400px;
+  width: 100%;
+  padding: 28px 24px;
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 16px 40px -20px color-mix(in oklab, var(--portfolio-ink) 24%, transparent);
+}
+
+.dv-error-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--muted);
+  color: var(--foreground);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+}
+
+.dv-error-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.dv-error-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.dv-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* Mobile Floating Bottom Control Pill */
+.dv-mobile-dock {
+  display: none;
+}
+
+@keyframes dv-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (max-width: 767px) {
+  .dv-portal-root {
+    padding: 0;
+  }
+
+  .dv-bezel {
+    width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+  }
+
+  .dv-panel {
+    border-radius: 0;
+    border: none;
+  }
+
+  .dv-header {
+    padding: max(12px, env(safe-area-inset-top)) 14px 12px 16px;
+  }
+
+  .dv-desktop-only {
+    display: none !important;
+  }
+
+  .dv-mobile-dock {
+    position: absolute;
+    left: 50%;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    padding: 5px 6px;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--card) 94%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--border);
+    box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.42);
+    max-width: calc(100vw - 20px);
+  }
+
+  .dv-header .dv-btn--icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+  }
+
+  .dv-mobile-dock .dv-btn {
+    min-width: 44px;
+    height: 44px;
+    padding: 0 5px;
+  }
+
+  .dv-mobile-dock .dv-btn--icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .dv-mobile-dock .dv-readout--page {
+    min-width: 40px;
+    padding: 0 2px;
+  }
+
+  .dv-mobile-dock .dv-divider {
+    margin: 0 1px;
+  }
+
+  .dv-pdf-scroll {
+    padding: 16px 10px 96px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dv-skeleton-sheet {
+    animation: none;
+  }
+  .dv-btn {
+    transition: none;
+  }
+}

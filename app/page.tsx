@@ -14,62 +14,56 @@ import SignatureHero from "@/components/ui/signature-hero";
 import FlexCarousel, { type FlexCarouselItem } from "@/components/ui/flex-carousel";
 import TextBlockAnimation from "@/components/ui/text-block-animation";
 import MaskedHeading from "@/components/ui/masked-heading";
-import ProfileCard from "@/components/ui/profile-card";
+import AboutMeSection from "@/components/about-me-section";
 
 const carouselItems: FlexCarouselItem[] = [
   {
-    src: "/flex-carousel/img-001.jpg",
-    alt: "McLaren Formula 1 car in chrome livery under iridescent studio light",
-    title: "Iridescence",
-    subtitle: "Studio 01",
+    src: "/flex-carousel/carousel-1.webp",
+    alt: "Me with My Lab Friends",
+    title: "Quick Picture after Lab Meeting",
+    subtitle: "SEA Laboratory ",
   },
   {
-    src: "/flex-carousel/img-002.jpg",
-    alt: "McLaren Formula 1 car climbing the Esses at Circuit of the Americas",
-    title: "The Esses",
-    subtitle: "Circuit 02",
+    src: "/flex-carousel/carousel-2.webp",
+    alt: "Exit I-Smile Lab",
+    title: "Memories of I-Smile Lab",
+    subtitle: "I-Smile Laboratory",
   },
   {
-    src: "/flex-carousel/img-003.jpg",
-    alt: "McLaren Formula 1 car streaking past a packed papaya grandstand",
-    title: "Grandstand Blur",
-    subtitle: "Trackside 03",
+    src: "/flex-carousel/carousel-3.webp",
+    alt: "Study Group Event Introduction to AI",
+    title: "Study Group Event: Introduction to AI",
+    subtitle: "First time as Event Coordinator",
   },
   {
-    src: "/flex-carousel/img-004.jpg",
-    alt: "Close-up of driver helmet and iridescent visor inside the cockpit",
-    title: "Visor Study",
-    subtitle: "Studio 04",
+    src: "/flex-carousel/carousel-4.webp",
+    alt: "Study Group : Fundamentals of Python",
+    title: "Study Group : Fundamentals of Python",
+    subtitle: "First time as Logistics Coordinator",
   },
   {
-    src: "/flex-carousel/img-005.jpg",
-    alt: "Driver celebrating a race victory standing on the McLaren Formula 1 car",
-    title: "Parc Fermé",
-    subtitle: "Podium 05",
+    src: "/flex-carousel/carousel-5.webp",
+    alt: "Began my Journey at Telkom University",
+    title: "First Day at Telkom University",
+    subtitle: "Memories - 1",
   },
   {
-    src: "/flex-carousel/img-006.jpg",
-    alt: "Front view of McLaren Formula 1 car clipping the apex kerb",
-    title: "Apex Load",
-    subtitle: "Sector 06",
+    src: "/flex-carousel/carousel-6.webp",
+    alt: "Last Photoshoot with Classmates",
+    title: "Last Photoshoot with Classmates",
+    subtitle: "Memories - 2",
   },
   {
-    src: "/flex-carousel/img-007.jpg",
-    alt: "Driver smiling in a rain-soaked race suit in the paddock",
-    title: "After Rain",
-    subtitle: "Paddock 07",
+    src: "/flex-carousel/carousel-7.webp",
+    alt: "Exit SEA Laboratory",
+    title: "Leaving SEA Laboratory",
+    subtitle: "SEA Laboratory",
   },
   {
-    src: "/flex-carousel/img-008.jpg",
-    alt: "High-angle view of McLaren Formula 1 car climbing Beau Rivage in Monte Carlo",
-    title: "Beau Rivage",
-    subtitle: "Monaco 08",
-  },
-  {
-    src: "/flex-carousel/img-009.jpg",
-    alt: "Low-angle view of McLaren Formula 1 car cornering before a full grandstand",
-    title: "Full Commit",
-    subtitle: "Corner 09",
+    src: "/flex-carousel/carousel-8.webp",
+    alt: "Machine Learning Intern at BRIN",
+    title: "Machine Learning Intern",
+    subtitle: "First Time Internship",
   },
 ];
 
@@ -131,16 +125,18 @@ export default function Home() {
           <SculptureHero
             brand="Sahrul"
             navLinks={[
-              { label: "Work", href: "#folders" },
-              { label: "Experience", href: "#experience" },
               { label: "About", href: "#about" },
+              { label: "Work", href: "#work" },
+              { label: "Experience", href: "#experience" },
+              { label: "Tech Stack", href: "#tech-stack"},
+              
             ]}
-            navCta={{ label: "Contact", href: "mailto:hello@example.com" }}
+            navCta={{ label: "Contact", href: "mailto:sahrulfirdauz9987@gmail.com" }}
             eyebrow=""
             headline="Ideas, made tangible."
             headlineAccent=""
             body="A working portfolio for thoughtful digital experiments, useful systems, and the details that make a screen feel human."
-            primaryCta={{ label: "Explore the archive", href: "#folders" }}
+            primaryCta={{ label: "Explore the archive", href: "#work" }}
             hint=""
             hintTouch=""
             background="#E8E7E3"
@@ -158,11 +154,11 @@ export default function Home() {
             backdropLayer={<SignatureHero />}
           />
 
-          {/* <MaskedHeading
+          <MaskedHeading
             text="When you're going to change the world. don't ask for permission."
             mediaType="image"
-            src="/reel-poster.jpg"
-            poster="/reel-poster.jpg"
+            src="/poster-2.webp"
+            poster="/poster-2.webp"
             fillScale={1.25}
             parallax={26}
             reveal="scale"
@@ -183,70 +179,9 @@ export default function Home() {
             tracking={-0.03}
             lineHeight={1.06}
             textScale={0.1}
-          /> */}
+          />
 
-          <m.section
-            className="about-section"
-            id="about"
-            initial="hidden"
-            animate="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.18 }}
-            variants={sectionReveal}
-            transition={sectionRevealTransition}
-          >
-            <div className="about-grid">
-              <div className="about-card-column">
-                <ProfileCard
-                  name="Sahrul Ridho Firdaus"
-                  title="Software Engineer"
-                  handle="sahrulfirdaus"
-                  status="Available for work"
-                  contactText="Contact"
-                  avatarUrl="./avatar.webp"
-                  holo={0.8}
-                  glare={0.35}
-                  tiltStrength={12}
-                  parallax={8}
-                  radius={16}
-                  enableTilt
-                  intro
-                  showUserInfo
-                  enableMobileTilt={false}
-                  theme={theme}
-                  onContactClick={() => {
-                    window.location.href = "mailto:hello@example.com?subject=Portfolio%20conversation";
-                  }}
-                />
-              </div>
-
-              <div className="about-copy">
-                <TextBlockAnimation>
-                  <h2>Beyond the Code.</h2>
-                </TextBlockAnimation>
-                <TextBlockAnimation
-                  delay={0.12}
-                  duration={0.5}
-                  blockColor="var(--portfolio-muted)"
-                >
-                  <p>
-                    Building software, working with data, and exploring the possibilities of AI.
-                  </p>
-                </TextBlockAnimation>
-
-                <dl className="about-specs" aria-label="Core focus areas">
-                  <div className="about-spec-item">
-                    <dt>Discipline</dt>
-                    <dd>Software Engineering, Data & AI/ML </dd>
-                  </div>
-                  <div className="about-spec-item">
-                    <dt>Approach</dt>
-                    <dd>Analytical thinking, practical experimentation, and reliable solutions.</dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-          </m.section>
+          <AboutMeSection theme={theme} />
 
           <m.section
             className="carousel-section"
@@ -294,7 +229,7 @@ export default function Home() {
 
           <m.section
             className="folder-section"
-            id="folders"
+            id="work"
             initial="hidden"
             animate="hidden"
             whileInView="visible"
@@ -302,35 +237,29 @@ export default function Home() {
             variants={sectionReveal}
             transition={sectionRevealTransition}
           >
-            <div className="section-intro">
-              <div className="section-heading">
-                <TextBlockAnimation>
-                  <h2>A record of progress</h2>
+            <span id="folders" aria-hidden="true" />
+            <div className="folder-section-grid">
+              <div className="section-intro">
+                <div className="section-heading">
+                  <TextBlockAnimation>
+                    <h2>A record of progress</h2>
+                  </TextBlockAnimation>
+                </div>
+                <TextBlockAnimation
+                  delay={0.12}
+                  duration={0.5}
+                  blockColor="var(--portfolio-muted)"
+                >
+                  <p>
+                    A collection of my academic background, practical projects, and ongoing exploration of data-driven systems.
+                  </p>
                 </TextBlockAnimation>
               </div>
-              <TextBlockAnimation
-                delay={0.12}
-                duration={0.5}
-                blockColor="var(--portfolio-muted)"
-              >
-                <p>
-                  A collection of my academic background, practical projects, and ongoing exploration of data-driven systems.
-                </p>
-              </TextBlockAnimation>
+              <PortfolioFolders />
             </div>
-            <PortfolioFolders />
           </m.section>
 
-          <m.section
-            className="experience-section"
-            id="experience"
-            initial="hidden"
-            animate="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.12 }}
-            variants={sectionReveal}
-            transition={sectionRevealTransition}
-          >
+          <section className="experience-section" id="experience">
             <Timeline
               title="Work in motion"
               periodLabel="2022 — 2026"
@@ -340,11 +269,11 @@ export default function Home() {
               backgroundColor="transparent"
               duration={1.4}
             />
-          </m.section>
+          </section>
 
           <m.section
             className="orbit-section"
-            id="moments"
+            id="tech-stack"
             initial="hidden"
             animate="hidden"
             whileInView="visible"
@@ -371,7 +300,6 @@ export default function Home() {
                 { src: "/tech-stack/c.svg", alt: "Chrome studio study under iridescent light" },
                 { src: "/tech-stack/python.svg", alt: "Climbing the Esses at Circuit of the Americas" },
                 { src: "/tech-stack/typescript.svg", alt: "Rain-soaked race suit in the paddock" },
-                { src: "/tech-stack/javascript.svg", alt: "Rain-soaked race suit in the paddock" },
                 { src: "/tech-stack/react.svg", alt: "Close-up of helmet and iridescent visor in studio" },
                 { src: "/tech-stack/node.svg", alt: "Rain-soaked race suit in the paddock" },         
                 { src: "/tech-stack/next.svg", alt: "High-angle climb up Beau Rivage in Monte Carlo" },

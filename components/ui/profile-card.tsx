@@ -29,6 +29,8 @@ interface ProfileCardProps {
   enableMobileTilt?: boolean;
   mobileTiltSensitivity?: number;
   intro?: boolean;
+  introTrigger?: boolean;
+  disableBackdropBlur?: boolean;
   className?: string;
 }
 
@@ -36,6 +38,7 @@ interface Engine {
   aim: (nx: number, ny: number, on?: boolean) => void;
   release: () => void;
   write: () => void;
+  triggerIntro: () => void;
 }
 
 type OrientationPermission = {
@@ -186,11 +189,12 @@ const SHADE_STYLE: CSSProperties = {
   opacity: 'calc(var(--pc-glare) * var(--pc-tilt))'
 };
 
-const ROOT = 'relative w-[340px] max-w-full touch-pan-y [perspective:1000px] [-webkit-tap-highlight-color:transparent]';
-const BODY =
-  'relative flex flex-col gap-[10px] rounded-[calc(var(--pc-radius)+10px)] p-[10px] backdrop-blur-[20px] backdrop-saturate-[1.6] will-change-transform [background:var(--pc-frame)] [box-shadow:var(--pc-frame-shadow)] [transform:rotateX(var(--pc-rotate-x))_rotateY(var(--pc-rotate-y))]';
+const ROOT = 'relative w-[340px] max-w-full touch-pan-y [contain:layout_style] [perspective:1000px] [-webkit-tap-highlight-color:transparent]';
+const BODY_BASE =
+  'relative flex flex-col gap-[10px] rounded-[calc(var(--pc-radius)+10px)] p-[10px] will-change-transform [background:var(--pc-frame)] [box-shadow:var(--pc-frame-shadow)] [transform:rotateX(var(--pc-rotate-x))_rotateY(var(--pc-rotate-y))]';
+const BODY_BLUR = 'backdrop-blur-[20px] backdrop-saturate-[1.6]';
 const TILE =
-  'relative isolate aspect-[4/5] overflow-hidden rounded-[var(--pc-radius)] [background:var(--pc-backdrop)] [box-shadow:var(--pc-tile-shadow)]';
+  'relative isolate aspect-[4/5] overflow-hidden rounded-[var(--pc-radius)] [contain:layout_paint_style] [background:var(--pc-backdrop)] [box-shadow:var(--pc-tile-shadow)]';
 const LAYER = 'pointer-events-none absolute inset-0 rounded-[inherit]';
 const HOLO = `${LAYER} [mix-blend-mode:var(--pc-blend)]`;
 const HOLO_LAYER = 'absolute inset-0';
@@ -229,6 +233,7 @@ interface TiltSettings {
   parallax: number;
   mobileTiltSensitivity: number;
   intro: boolean;
+  introTrigger: boolean;
 }
 
 function resolveProfileFoil(palette: Palette, backdropColor?: string): Palette {
@@ -280,8 +285,31 @@ function buildProfileCardStyle({
   } as CSSProperties;
 }
 
+interface TiltElements {
+  root: HTMLDivElement;
+  body: HTMLElement | null;
+  sheen: HTMLElement | null;
+  holo: HTMLElement | null;
+  photo: HTMLElement | null;
+  glare: HTMLElement | null;
+  shade: HTMLElement | null;
+}
+
+function setScopedVar(
+  el: HTMLElement | null,
+  prev: Record<string, string>,
+  key: string,
+  prop: string,
+  val: string,
+): void {
+  if (!el || prev[key] === val) return;
+  prev[key] = val;
+  el.style.setProperty(prop, val);
+}
+
 function writeTiltCssVars(
-  root: HTMLDivElement,
+  els: TiltElements,
+  prev: Record<string, string>,
   size: { width: number; height: number },
   x: { p: number },
   y: { p: number },
@@ -292,20 +320,47 @@ function writeTiltCssVars(
   const angle = settings.enableTilt && !reduced ? settings.tiltStrength : 0;
   const tilt = Math.min(1, Math.hypot(x.p, y.p));
   const parallaxDepth = reduced ? 0 : settings.parallax;
-  const style = root.style;
-  style.setProperty('--pc-light-x', `${((x.p + 1) * 0.5 * size.width).toFixed(1)}px`);
-  style.setProperty('--pc-light-y', `${((y.p + 1) * 0.5 * size.height).toFixed(1)}px`);
-  style.setProperty('--pc-pointer-x', `${((x.p + 1) * 50).toFixed(2)}%`);
-  style.setProperty('--pc-pointer-y', `${((y.p + 1) * 50).toFixed(2)}%`);
-  style.setProperty('--pc-band-x', `${(50 + x.p * 15).toFixed(2)}%`);
-  style.setProperty('--pc-band-y', `${(50 + y.p * 15).toFixed(2)}%`);
-  style.setProperty('--pc-rotate-x', `${(y.p * angle).toFixed(3)}deg`);
-  style.setProperty('--pc-rotate-y', `${(-x.p * angle).toFixed(3)}deg`);
-  style.setProperty('--pc-shift-x', `${(x.p * parallaxDepth).toFixed(2)}px`);
-  style.setProperty('--pc-shift-y', `${(y.p * parallaxDepth).toFixed(2)}px`);
-  style.setProperty('--pc-reach', tilt.toFixed(4));
-  style.setProperty('--pc-tilt', (tilt * light.p).toFixed(4));
-  style.setProperty('--pc-active', light.p.toFixed(4));
+
+  const lightX = `${((x.p + 1) * 0.5 * size.width).toFixed(1)}px`;
+  const lightY = `${((y.p + 1) * 0.5 * size.height).toFixed(1)}px`;
+  const pointerX = `${((x.p + 1) * 50).toFixed(2)}%`;
+  const pointerY = `${((y.p + 1) * 50).toFixed(2)}%`;
+  const bandX = `${(50 + x.p * 15).toFixed(2)}%`;
+  const bandY = `${(50 + y.p * 15).toFixed(2)}%`;
+  const rotateX = `${(y.p * angle).toFixed(3)}deg`;
+  const rotateY = `${(-x.p * angle).toFixed(3)}deg`;
+  const shiftX = `${(x.p * parallaxDepth).toFixed(2)}px`;
+  const shiftY = `${(y.p * parallaxDepth).toFixed(2)}px`;
+  const reach = tilt.toFixed(4);
+  const tiltVal = (tilt * light.p).toFixed(4);
+  const active = light.p.toFixed(4);
+
+  setScopedVar(els.body, prev, 'body:rx', '--pc-rotate-x', rotateX);
+  setScopedVar(els.body, prev, 'body:ry', '--pc-rotate-y', rotateY);
+
+  setScopedVar(els.sheen, prev, 'sheen:lx', '--pc-light-x', lightX);
+  setScopedVar(els.sheen, prev, 'sheen:ly', '--pc-light-y', lightY);
+  setScopedVar(els.sheen, prev, 'sheen:ac', '--pc-active', active);
+
+  setScopedVar(els.holo, prev, 'holo:px', '--pc-pointer-x', pointerX);
+  setScopedVar(els.holo, prev, 'holo:py', '--pc-pointer-y', pointerY);
+  setScopedVar(els.holo, prev, 'holo:bx', '--pc-band-x', bandX);
+  setScopedVar(els.holo, prev, 'holo:by', '--pc-band-y', bandY);
+  setScopedVar(els.holo, prev, 'holo:sx', '--pc-shift-x', shiftX);
+  setScopedVar(els.holo, prev, 'holo:sy', '--pc-shift-y', shiftY);
+  setScopedVar(els.holo, prev, 'holo:rc', '--pc-reach', reach);
+  setScopedVar(els.holo, prev, 'holo:ac', '--pc-active', active);
+
+  setScopedVar(els.photo, prev, 'photo:sx', '--pc-shift-x', shiftX);
+  setScopedVar(els.photo, prev, 'photo:sy', '--pc-shift-y', shiftY);
+
+  setScopedVar(els.glare, prev, 'glare:lx', '--pc-light-x', lightX);
+  setScopedVar(els.glare, prev, 'glare:ly', '--pc-light-y', lightY);
+  setScopedVar(els.glare, prev, 'glare:ac', '--pc-active', active);
+
+  setScopedVar(els.shade, prev, 'shade:lx', '--pc-light-x', lightX);
+  setScopedVar(els.shade, prev, 'shade:ly', '--pc-light-y', lightY);
+  setScopedVar(els.shade, prev, 'shade:tl', '--pc-tilt', tiltVal);
 }
 
 function mountProfileTiltEngine(
@@ -318,12 +373,22 @@ function mountProfileTiltEngine(
   const x = { p: 0, v: 0, target: 0 };
   const y = { p: 0, v: 0, target: 0 };
   const light = { p: 0, target: 0 };
+  const prev: Record<string, string> = {};
+  const els: TiltElements = {
+    root,
+    body: root.querySelector<HTMLElement>('[data-pc="body"]'),
+    sheen: root.querySelector<HTMLElement>('[data-pc="sheen"]'),
+    holo: root.querySelector<HTMLElement>('[data-pc="holo"]'),
+    photo: root.querySelector<HTMLElement>('[data-pc="photo"]'),
+    glare: root.querySelector<HTMLElement>('[data-pc="glare"]'),
+    shade: root.querySelector<HTMLElement>('[data-pc="shade"]'),
+  };
   let raf = 0;
   let last = 0;
   let slowUntil = 0;
   let touchId: number | null = null;
 
-  const write = () => writeTiltCssVars(root, size, x, y, light, settingsRef.current, reduced);
+  const write = () => writeTiltCssVars(els, prev, size, x, y, light, settingsRef.current, reduced);
 
   const frame = (now: number) => {
     const dt = Math.min(0.05, (now - last) / 1000 || 0);
@@ -379,7 +444,19 @@ function mountProfileTiltEngine(
     aim(((event.clientX - rect.left) / rect.width) * 2 - 1, ((event.clientY - rect.top) / rect.height) * 2 - 1);
   };
 
-  const release = () => aim(0, 0, false);
+  const release = () => {
+    if (
+      x.p === 0 &&
+      y.p === 0 &&
+      light.p === 0 &&
+      x.target === 0 &&
+      y.target === 0 &&
+      light.target === 0
+    ) {
+      return;
+    }
+    aim(0, 0, false);
+  };
   const onEnter = (e: PointerEvent) => { if (e.pointerType === 'mouse') aimAt(e); };
   const onMove = (e: PointerEvent) => { if (e.pointerType === 'mouse' || e.pointerId === touchId) aimAt(e); };
   const onLeave = (e: PointerEvent) => { if (e.pointerType === 'mouse') release(); };
@@ -400,22 +477,64 @@ function mountProfileTiltEngine(
   });
   observer.observe(root);
 
-  engineRef.current = { aim, release, write };
+  let introObserver: IntersectionObserver | null = null;
+  let introPlayed = false;
 
-  if (settingsRef.current.intro && !reduced) {
+  const startIntro = () => {
+    if (introPlayed || !settingsRef.current.intro || !settingsRef.current.introTrigger || reduced) {
+      return;
+    }
+    introPlayed = true;
     x.p = 0.62;
     y.p = -0.55;
     light.p = 1;
     slowUntil = performance.now() + 1400;
     write();
     wake();
-  } else {
-    write();
+  };
+
+  const triggerIntro = () => {
+    if (introPlayed || !settingsRef.current.intro || !settingsRef.current.introTrigger || reduced) {
+      return;
+    }
+    const rect = root.getBoundingClientRect();
+    const vh = window.innerHeight || 1;
+    const visibleH = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+    if (rect.height > 0 && visibleH / rect.height >= 0.3) {
+      introObserver?.disconnect();
+      introObserver = null;
+      startIntro();
+    }
+  };
+
+  engineRef.current = { aim, release, write, triggerIntro };
+  write();
+
+  if (settingsRef.current.intro && !reduced) {
+    if (typeof IntersectionObserver !== 'undefined') {
+      introObserver = new IntersectionObserver(
+        (entries) => {
+          if (
+            settingsRef.current.introTrigger &&
+            entries.some((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.3)
+          ) {
+            introObserver?.disconnect();
+            introObserver = null;
+            startIntro();
+          }
+        },
+        { threshold: 0.3 },
+      );
+      introObserver.observe(root);
+    } else {
+      startIntro();
+    }
   }
 
   return () => {
     cancelAnimationFrame(raf);
     observer.disconnect();
+    introObserver?.disconnect();
     root.removeEventListener('pointerenter', onEnter);
     root.removeEventListener('pointermove', onMove);
     root.removeEventListener('pointerleave', onLeave);
@@ -470,6 +589,11 @@ function useProfileTilt(
   useEffect(() => {
     settingsRef.current = settings;
     engineRef.current?.write();
+    if (settings.intro && settings.introTrigger) {
+      engineRef.current?.triggerIntro();
+    } else if (!settings.introTrigger) {
+      engineRef.current?.release();
+    }
   });
 
   useEffect(() => {
@@ -505,13 +629,14 @@ function ProfileCardTile({
 }) {
   return (
     <div className={TILE}>
-      <span className={LAYER} style={SHEEN_STYLE} />
-      <span className={HOLO} style={HOLO_STYLE}>
+      <span data-pc="sheen" className={LAYER} style={SHEEN_STYLE} />
+      <span data-pc="holo" className={HOLO} style={HOLO_STYLE}>
         <span className={HOLO_LAYER} style={GLOW_STYLE} />
         <span className={HOLO_LAYER} style={SHIFT_STYLE} />
       </span>
       {avatarUrl ? (
         <img
+          data-pc="photo"
           className={PHOTO}
           style={PHOTO_STYLE}
           src={avatarUrl}
@@ -600,6 +725,8 @@ const ProfileCard = ({
   enableMobileTilt = false,
   mobileTiltSensitivity = 5,
   intro = true,
+  introTrigger = true,
+  disableBackdropBlur = false,
   className = '',
 }: ProfileCardProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -610,11 +737,12 @@ const ProfileCard = ({
     parallax,
     mobileTiltSensitivity,
     intro,
+    introTrigger,
   });
 
   useMobileOrientationTilt(rootRef, engineRef, settingsRef, enableMobileTilt);
 
-  const rootStyle = buildProfileCardStyle({
+  const baseStyle = buildProfileCardStyle({
     theme,
     backdropColor,
     radius,
@@ -625,9 +753,18 @@ const ProfileCard = ({
     iconUrl,
   });
 
+  const rootStyle: CSSProperties = disableBackdropBlur
+    ? ({
+        ...baseStyle,
+        '--pc-frame': theme === 'light' ? 'rgba(242, 242, 245, 0.96)' : 'rgba(32, 30, 39, 0.94)',
+      } as CSSProperties)
+    : baseStyle;
+
+  const bodyClassName = disableBackdropBlur ? BODY_BASE : `${BODY_BASE} ${BODY_BLUR}`;
+
   return (
     <div ref={rootRef} className={`${ROOT} ${className}`.trim()} style={rootStyle}>
-      <div className={BODY}>
+      <div data-pc="body" className={bodyClassName}>
         <ProfileCardTile avatarUrl={avatarUrl} name={name} title={title} />
 
         {showUserInfo ? (
@@ -641,8 +778,8 @@ const ProfileCard = ({
           />
         ) : null}
 
-        <span className={GLARE} style={GLARE_STYLE} />
-        <span className={LAYER} style={SHADE_STYLE} />
+        <span data-pc="glare" className={GLARE} style={GLARE_STYLE} />
+        <span data-pc="shade" className={LAYER} style={SHADE_STYLE} />
         <span className={RIM} />
       </div>
     </div>

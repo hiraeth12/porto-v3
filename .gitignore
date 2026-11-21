@@ -39,3 +39,29 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# Playwright CLI output (may contain credentials)
+.playwright-cli/
+.playwright/
+
+#AI-Slop
+.agents/
+.claude/
+.clinerules/
+.codex/
+.copilot/
+.cursor/
+.github/
+.impeccable/
+.opencode/
+.taste-skill/
+.windsurf
+agent/
+
+results/
+analyze-trace.mjs
+diff.mjs
+FINDINGS.md
+measure.mjs
+REPORT.md
+
+scripts/

@@ -1,0 +1,981 @@
+/* Scoped styles for macOS Finder-Inspired Single-Pane File Explorer (fx-*)
+ * Built on portfolio design tokens in app/globals.css with authentic macOS Finder List View ergonomics.
+ */
+
+.fx-page-shell {
+  min-height: 100dvh;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 3.5vw, 44px) var(--section-padding-inline) clamp(48px, 6vh, 80px);
+  background: var(--portfolio-paper);
+  color: var(--portfolio-ink);
+  font-family: var(--portfolio-body, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 360ms cubic-bezier(0.22, 1, 0.36, 1), color 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Top ambient navigation bar outside the Finder window */
+.fx-ambient-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  max-width: var(--portfolio-content-width);
+  margin: 0 auto clamp(18px, 2.5vh, 28px);
+}
+
+.fx-back-portfolio-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--card) 78%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition:
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fx-back-portfolio-link:hover {
+  background: var(--card);
+  border-color: var(--portfolio-ink);
+}
+
+.fx-back-portfolio-link:active {
+  transform: scale(0.97);
+}
+
+.fx-back-portfolio-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--portfolio-ink) 8%, transparent);
+  color: var(--foreground);
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fx-back-portfolio-link:hover .fx-back-portfolio-icon {
+  transform: translateX(-2px);
+}
+
+.fx-ambient-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fx-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  background: color-mix(in oklab, var(--card) 78%, transparent);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fx-theme-toggle:hover {
+  background: var(--card);
+  border-color: var(--portfolio-ink);
+}
+
+.fx-theme-toggle:active {
+  transform: scale(0.97);
+}
+
+/* Outer Double-Bezel Hardware Enclosure */
+.fx-window-bezel {
+  --fx-select-bg: #0058d0;
+  --fx-select-ink: #ffffff;
+  --fx-select-muted: rgba(255, 255, 255, 0.78);
+  --fx-row-even: color-mix(in oklab, var(--muted) 38%, transparent);
+  --fx-row-hover: color-mix(in oklab, var(--portfolio-ink) 5%, transparent);
+  --fx-toolbar-bg: color-mix(in oklab, var(--card) 92%, var(--muted));
+  position: relative;
+  width: 100%;
+  max-width: var(--portfolio-content-width);
+  margin: 0 auto;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  border-radius: calc(var(--radius) + 14px);
+  background: color-mix(in oklab, var(--card) 68%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  box-shadow:
+    0 32px 80px -24px color-mix(in oklab, var(--portfolio-ink) 26%, transparent),
+    0 2px 8px 0 color-mix(in oklab, var(--portfolio-ink) 8%, transparent),
+    inset 0 1px 0 0 color-mix(in oklab, var(--portfolio-surface) 70%, transparent);
+}
+
+:root[data-theme="dark"] .fx-window-bezel,
+.dark .fx-window-bezel {
+  --fx-select-bg: #1d4ed8;
+  --fx-row-even: rgba(255, 255, 255, 0.025);
+  --fx-row-hover: rgba(255, 255, 255, 0.055);
+  box-shadow:
+    0 36px 90px -24px rgba(0, 0, 0, 0.72),
+    0 2px 8px 0 rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Inner Finder Window Core */
+.fx-window {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: clamp(540px, 74dvh, 780px);
+  border-radius: calc(var(--radius) + 8px);
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* macOS Finder Unified Top Toolbar */
+.fx-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--fx-toolbar-bg);
+  border-bottom: 1px solid var(--border);
+  user-select: none;
+}
+
+.fx-toolbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fx-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* macOS Window Traffic Lights */
+.fx-traffic-lights {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 4px;
+}
+
+.fx-traffic-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fx-traffic-dot--close {
+  background: #ff5f57;
+  cursor: pointer;
+}
+
+.fx-traffic-dot--min {
+  background: #febc2e;
+}
+
+.fx-traffic-dot--max {
+  background: #28c840;
+}
+
+/* History Navigation Cluster (< >) */
+.fx-nav-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--muted) 75%, transparent);
+  border: 1px solid var(--border);
+}
+
+.fx-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  transition:
+    background-color 160ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 160ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fx-icon-btn:hover:not(:disabled) {
+  background: var(--card);
+  border-color: var(--border);
+}
+
+.fx-icon-btn:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.fx-icon-btn:disabled {
+  opacity: 0.34;
+  cursor: not-allowed;
+}
+
+/* Active Folder Title in Toolbar */
+.fx-folder-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fx-folder-glyph {
+  color: var(--portfolio-accent);
+  flex-shrink: 0;
+  display: inline-flex;
+}
+
+.fx-folder-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fx-folder-subtitle {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+/* Right Toolbar Controls: Quick Look, Kind Filter, Search */
+.fx-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fx-quicklook-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 11px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fx-quicklook-btn:hover:not(:disabled) {
+  background: var(--muted);
+}
+
+.fx-quicklook-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.fx-quicklook-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+/* Search Input (Finder style) */
+.fx-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: clamp(190px, 22vw, 260px);
+}
+
+.fx-search-icon {
+  position: absolute;
+  left: 10px;
+  color: var(--muted-foreground);
+  pointer-events: none;
+  display: inline-flex;
+}
+
+.fx-search-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 28px 0 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 12.5px;
+  outline: none;
+  transition:
+    border-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fx-search-input::placeholder {
+  color: var(--muted-foreground);
+}
+
+.fx-search-input:focus {
+  border-color: var(--portfolio-accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--portfolio-accent) 22%, transparent);
+}
+
+.fx-search-clear {
+  position: absolute;
+  right: 6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: none;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.fx-search-clear:hover {
+  color: var(--foreground);
+}
+
+/* Second Toolbar Sub-row: Single-Pane Folder Tabs & Kind Filter */
+.fx-toolbar-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 6px;
+  border-top: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+  flex-wrap: wrap;
+}
+
+.fx-folder-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.fx-folder-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fx-folder-tab:hover {
+  color: var(--foreground);
+  background: color-mix(in oklab, var(--card) 60%, transparent);
+}
+
+.fx-folder-tab[data-active="true"] {
+  background: var(--card);
+  color: var(--foreground);
+  border-color: var(--border);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.fx-folder-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 10.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.fx-folder-tab[data-active="true"] .fx-folder-tab-count {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.fx-kind-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--muted) 75%, transparent);
+  border: 1px solid var(--border);
+}
+
+.fx-kind-pill {
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 160ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fx-kind-pill[data-active="true"] {
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* Finder List View Column Header Row */
+.fx-list-header {
+  display: grid;
+  grid-template-columns: minmax(220px, 2.2fr) minmax(120px, 1fr) minmax(110px, 0.9fr) minmax(130px, 0.95fr) 96px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 18px;
+  height: 30px;
+  background: color-mix(in oklab, var(--card) 96%, var(--muted));
+  border-bottom: 1px solid var(--border);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  user-select: none;
+}
+
+.fx-col-sort-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  color: inherit;
+  font-weight: 600;
+  padding: 4px 0;
+}
+
+.fx-col-sort-btn:hover {
+  color: var(--foreground);
+}
+
+.fx-col-sort-btn[data-active="true"] {
+  color: var(--foreground);
+}
+
+.fx-sort-indicator {
+  font-size: 9px;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+/* Finder List Body */
+.fx-list-viewport {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  overflow-y: auto;
+  outline: none;
+}
+
+.fx-list-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Individual Finder Row */
+.fx-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 2.2fr) minmax(120px, 1fr) minmax(110px, 0.9fr) minmax(130px, 0.95fr) 96px;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 4px 12px;
+  border-radius: 7px;
+  color: var(--foreground);
+  font-size: 13px;
+  cursor: default;
+  user-select: none;
+  outline: none;
+  transition: background-color 90ms ease;
+}
+
+.fx-row:nth-child(even):not([data-selected="true"]) {
+  background: var(--fx-row-even);
+}
+
+.fx-row:hover:not([data-selected="true"]) {
+  background: var(--fx-row-hover);
+}
+
+/* Authentic macOS Finder Selected Row State (Finder Blue) */
+.fx-row[data-selected="true"] {
+  background: var(--fx-select-bg);
+  color: var(--fx-select-ink);
+}
+
+.fx-row:focus-within:has(.fx-row-select:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+.fx-row-select {
+  all: unset;
+  box-sizing: border-box;
+  grid-column: 1 / -2;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+  min-width: 0;
+  cursor: default;
+  border-radius: 5px;
+}
+
+/* File Name Cell + Miniature Sheet Thumbnail */
+.fx-cell-name {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.fx-file-thumb {
+  position: relative;
+  width: 26px;
+  height: 32px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  border: 1px solid color-mix(in oklab, var(--portfolio-ink) 16%, transparent);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.fx-file-thumb[data-kind="project"] {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  border-color: color-mix(in oklab, var(--portfolio-accent) 45%, var(--border));
+}
+
+.fx-file-thumb-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.88;
+}
+
+.fx-file-thumb[data-art="aurora"] {
+  background: linear-gradient(135deg, #f4efe9 0%, #c2433f 48%, #22395e 100%);
+}
+
+.fx-file-thumb[data-art="ember"] {
+  background: linear-gradient(135deg, #16252c 0%, #a3201a 55%, #ff8a5c 100%);
+}
+
+.fx-file-thumb[data-art="dusk"] {
+  background: linear-gradient(135deg, #3e2850 0%, #8f6c9c 50%, #eab08a 100%);
+}
+
+.fx-file-thumb[data-art="glacier"] {
+  background: linear-gradient(135deg, #f7f8fa 0%, #9fb4c7 60%, #ffffff 100%);
+}
+
+.fx-file-thumb[data-art="verdant"] {
+  background: linear-gradient(135deg, #173024 0%, #4f7a5a 52%, #e9cf87 100%);
+}
+
+.fx-file-thumb-ext {
+  position: relative;
+  z-index: 1;
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 1px 3px;
+  border-radius: 2px;
+  background: rgba(9, 9, 11, 0.72);
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.fx-file-thumb[data-kind="project"] .fx-file-thumb-ext {
+  background: rgba(37, 99, 235, 0.88);
+  color: #ffffff;
+}
+
+.fx-file-thumb:not([data-art]):not([data-kind="project"]) .fx-file-thumb-ext {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.fx-name-stack {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1px;
+}
+
+.fx-file-title {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fx-file-subname {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fx-row[data-selected="true"] .fx-file-subname,
+.fx-row[data-selected="true"] .fx-cell-meta,
+.fx-row[data-selected="true"] .fx-cell-folder,
+.fx-row[data-selected="true"] .fx-cell-kind {
+  color: var(--fx-select-muted);
+}
+
+.fx-cell-meta,
+.fx-cell-folder,
+.fx-cell-kind {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fx-kind-badge {
+  display: inline-flex;
+  align-items: center;
+}
+
+.fx-kind-badge--project {
+  font-weight: 500;
+  color: var(--portfolio-accent);
+}
+
+.fx-row[data-selected="true"] .fx-kind-badge--project {
+  color: #ffffff;
+}
+
+.fx-folder-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--muted) 80%, transparent);
+  color: var(--foreground);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.fx-row[data-selected="true"] .fx-folder-pill-badge {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.fx-cell-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.fx-row-open-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease,
+    border-color 150ms ease;
+}
+
+.fx-row-open-btn:hover {
+  background: var(--muted);
+}
+
+.fx-row-open-btn:active {
+  transform: scale(0.95);
+}
+
+.fx-row[data-selected="true"] .fx-row-open-btn {
+  background: #ffffff;
+  color: #0058d0;
+  border-color: transparent;
+  font-weight: 600;
+}
+
+/* Empty Search State */
+.fx-empty-state {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  gap: 10px;
+  color: var(--muted-foreground);
+}
+
+.fx-empty-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.fx-empty-desc {
+  margin: 0;
+  font-size: 13px;
+  max-width: 34ch;
+}
+
+/* Bottom Finder Path Bar */
+.fx-pathbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: color-mix(in oklab, var(--card) 94%, var(--muted));
+  border-top: 1px solid var(--border);
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+  overflow-x: auto;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.fx-path-segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted-foreground);
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.fx-path-segment:hover {
+  color: var(--foreground);
+  background: var(--muted);
+}
+
+.fx-path-segment--active {
+  color: var(--foreground);
+  font-weight: 500;
+  cursor: default;
+}
+
+.fx-path-sep {
+  opacity: 0.45;
+  font-size: 10px;
+}
+
+/* Bottom Finder Status Bar */
+.fx-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 16px;
+  background: var(--fx-toolbar-bg);
+  border-top: 1px solid var(--border);
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.fx-statusbar-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fx-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+/* Mobile Responsive Collapse (< 768px) */
+@media (max-width: 767px) {
+  .fx-page-shell {
+    padding: 14px 12px 32px;
+  }
+
+  .fx-window-bezel {
+    padding: 4px;
+    border-radius: calc(var(--radius) + 10px);
+  }
+
+  .fx-toolbar {
+    padding: 10px 12px;
+  }
+
+  .fx-traffic-lights {
+    display: none;
+  }
+
+  .fx-search-wrap {
+    width: 100%;
+    order: 3;
+  }
+
+  .fx-toolbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .fx-folder-tabs {
+    width: 100%;
+    padding-bottom: 2px;
+  }
+
+  .fx-folder-tab {
+    height: 36px;
+    padding: 0 11px;
+    font-size: 12px;
+  }
+
+  .fx-kind-pills {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .fx-kind-pill {
+    height: 30px;
+    text-align: center;
+  }
+
+  .fx-row-open-btn {
+    height: 34px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .fx-list-header {
+    grid-template-columns: minmax(0, 1fr) 74px;
+    padding: 0 12px;
+  }
+
+  .fx-col-hide-mobile {
+    display: none !important;
+  }
+
+  .fx-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 54px;
+    padding: 6px 10px;
+  }
+
+  .fx-statusbar-hint {
+    display: none;
+  }
+}

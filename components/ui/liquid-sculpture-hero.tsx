@@ -1211,49 +1211,7 @@ const CSS = `
 .sh-root[data-swap="1"] .sh-fallback{opacity:0;transition-duration:.25s}
 .sh-backdrop{position:absolute;left:50%;z-index:0;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;user-select:none;
   font-family:var(--sh-head);font-weight:600;letter-spacing:-.06em;line-height:.8;color:color-mix(in srgb,var(--sh-fg) 5%,transparent)}
-.sh-nav{position:relative;z-index:120;display:flex;align-items:center;justify-content:space-between;gap:24px;
-  padding:26px clamp(20px,3.2vw,48px) 0;width:100%;box-sizing:border-box}
-.sh-nav[data-fixed="true"]{position:fixed;top:0;left:0;right:0;height:60px;align-items:flex-start;justify-content:center;
-  color:var(--sh-fg);font-family:var(--sh-body);-webkit-font-smoothing:antialiased;pointer-events:none}
-.sh-nav[data-fixed="true"] > *{pointer-events:auto}
-.sh-island{position:relative;display:flex;align-items:center;justify-content:space-between;gap:24px;
-  width:100%;min-height:34px;padding:0;color:inherit;box-sizing:border-box;transform-origin:50% 0;pointer-events:auto}
-.sh-island::before{content:"";position:absolute;inset:-14px -16px;pointer-events:auto}
-.sh-island > :not(.sh-island-surface){position:relative;pointer-events:auto}
-.sh-island-surface{position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:color-mix(in srgb,var(--sh-bg) 82%,transparent);
-  border:1px solid color-mix(in srgb,var(--sh-fg) 14%,transparent);
-  backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4)}
-.sh-nav[data-island="collapsed"] > .sh-island{width:auto;gap:20px;padding:5px 16px;margin-top:-12px;margin-bottom:-12px;pointer-events:auto}
-.sh-nav[data-island="collapsed"] .sh-brand{font-size:15px}
-.sh-nav:not([data-menu-open="true"]) .staggered-menu-panel,
-.sh-nav:not([data-menu-open="true"]) .sm-prelayers{visibility:hidden !important;opacity:0 !important;pointer-events:none !important}
-.sh-nav[data-menu-open="true"] .sh-island,
-.sh-nav[data-menu-open="true"] .sh-links,
-.sh-nav[data-menu-open="true"] .sh-menu-slot{transform:none !important;will-change:auto !important}
-.sh-nav-spacer{height:78px;flex:0 0 auto;pointer-events:none}
-.sh-brand{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;font-family:var(--sh-head);font-weight:600;font-size:17px;letter-spacing:-.02em;color:inherit;text-decoration:none;line-height:1}
-.sh-brand-text{display:inline-block}
-.sh-island-dot{width:7px;height:7px;border-radius:50%;background:var(--portfolio-accent,var(--sh-acc));flex:0 0 auto}
-.sh-links{position:relative;z-index:2;display:flex;align-items:center;gap:clamp(18px,2.4vw,36px);list-style:none;margin:0;padding:0}
-.sh-link{color:inherit;text-decoration:none;font-size:13.5px;letter-spacing:-.005em;opacity:.72;transition:opacity .2s}
-.sh-link:hover{opacity:1}
-.sh-theme{display:inline-grid;place-items:center;width:34px;height:34px;padding:0;border-radius:50%;cursor:pointer;color:inherit;background:transparent;
-  border:1px solid color-mix(in srgb,var(--sh-fg) 22%,transparent);transition:background .25s,color .25s}
-.sh-theme:hover{background:var(--sh-fg);color:var(--sh-bg)}
-.sh-theme:focus-visible{outline:2px solid var(--sh-fg);outline-offset:4px}
-.sh-menu-slot{display:inline-flex;width:max-content !important;height:34px}
-.sh-menu-slot .sm-scope{position:static !important;display:block;width:max-content !important;height:34px;z-index:3}
-.sh-menu-slot .staggered-menu-wrapper{position:static !important;display:block;width:max-content !important;height:34px}
-.sh-menu-slot .staggered-menu-header{position:relative !important;display:flex;width:max-content !important;height:34px;padding:0 !important;justify-content:flex-end;z-index:50 !important}
-.sh-menu-slot .sm-toggle-textWrap{width:3.35em !important;min-width:3.35em !important}
-.sh-menu-slot .sm-logo{display:none}
-.sh-menu-slot .staggered-menu-panel{position:fixed !important;top:0 !important;right:0 !important;height:100dvh !important}
-.sh-menu-slot .sm-prelayers{position:fixed !important;top:0 !important;right:0 !important;bottom:0 !important;height:100dvh !important}
-@media (max-width:1024px){
-  .sh-menu-slot .staggered-menu-panel{left:0 !important;width:100vw !important}
-  .sh-menu-slot .sm-prelayers{left:0 !important;width:100vw !important}
-}
+.sh-nav-spacer{height:86px;flex:0 0 auto;pointer-events:none}
 .sh-hint{position:absolute;z-index:1;transform:translate(-50%,0);display:flex;align-items:center;gap:10px;white-space:nowrap;
   font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.5;pointer-events:none;transition:opacity .8s ease}
 .sh-hint::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;animation:sh-pulse 2.4s ease-in-out infinite}
@@ -1276,7 +1234,7 @@ const CSS = `
   color:var(--sh-bg);text-decoration:none;font-size:14.5px;font-weight:500;letter-spacing:-.01em;pointer-events:none;user-select:none;cursor:default}
 .sh-btn svg{animation:sh-arrow-down 1.6s cubic-bezier(.45,0,.55,1) infinite}
 @keyframes sh-arrow-down{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
-.sh-root a:focus-visible,.sh-nav a:focus-visible{outline:2px solid var(--sh-fg);outline-offset:4px;border-radius:4px}
+.sh-root a:focus-visible{outline:2px solid var(--sh-fg);outline-offset:4px;border-radius:4px}
 .sh-credit{position:absolute;z-index:2;right:clamp(20px,3.2cqw,48px);bottom:10px;font-size:10px;letter-spacing:.06em;
   color:inherit;opacity:.38;text-decoration:none}
 .sh-credit:hover{opacity:.8}
@@ -1285,15 +1243,7 @@ const CSS = `
   .sh-aside{justify-self:start;max-width:520px;padding-bottom:0}
   .sh-h1{font-size:clamp(40px,min(9.5cqw,9cqh),96px)}
 }
-@media (max-width:767px){
-  .sh-links > li:not(.sh-keep){display:none}
-}
-@media (max-width:639px){
-  .sh-nav[data-fixed="true"]{height:54px;padding-top:20px}
-  .sh-nav[data-island="collapsed"] > .sh-island{gap:16px;padding:4px 14px;margin-top:-8px;margin-bottom:-8px}
-}
 @container (max-width:639px){
-  .sh-nav{padding-top:20px}
   .sh-h1{font-size:clamp(36px,min(12.5cqw,7.2cqh),60px);line-height:.94}
   .sh-body{font-size:15px;margin-bottom:20px}
   .sh-eyebrow{font-size:11px}
