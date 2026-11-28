@@ -333,56 +333,7 @@ export const PROJECTS_DATA: ProjectData[] = [
       },
     ],
   },
-  {
-    id: "finetuning-distilbert-nli",
-    slug: "finetuning-distilbert-nli",
-    name: "Fine-Tuning DistilBERT for Natural Language Inference (MNLI)",
-    description:
-      "A comprehensive implementation of fine-tuning the DistilBERT model for Multi-Genre Natural Language Inference (MNLI) task[cite: 1]. The project demonstrates the application of transfer learning techniques to classify textual entailment relationships into Entailment, Neutral, and Contradiction[cite: 1].",
-    thumbnail: "/project-images/hugging-face/nli-distilbert-base.png",
-    category: "Natural Language Processing",
-    date: "2026",
-    folderId: "case-studies",
-    liveDemo: "#",
-    github: "https://github.com/hiraeth12/finetuning-distilbert-nli",
-    images: [
-      {
-        src: "/project-images/hugging-face/nli-distilbert-base.png",
-        alt: "DistilBERT MNLI Dashboard",
-        caption: "Natural Language Inference Results",
-      },
-    ],
-    technologies: [
-      "Python",
-      "PyTorch",
-      "HuggingFace Transformers",
-      "DistilBERT",
-      "Scikit-learn",
-      "NumPy",
-    ],
-    features: [
-      {
-        title: "Multi-Class Natural Language Inference",
-        description:
-          "Classifies textual entailment relationships between premise-hypothesis pairs into three categories: Entailment (0), Neutral (1), and Contradiction (2)[cite: 1].",
-      },
-      {
-        title: "Transformer-Based Transfer Learning",
-        description:
-          "Fine-tunes a pre-trained DistilBERT-base-uncased model on the GLUE MNLI dataset, which is 40% smaller and 60% faster than BERT-base[cite: 1].",
-      },
-      {
-        title: "Optimized Training Configuration",
-        description:
-          "Utilizes GPU-accelerated training with mixed precision (FP16), AdamW optimizer with weight decay, and epoch-based evaluation strategy[cite: 1].",
-      },
-      {
-        title: "Automated Inference Pipeline",
-        description:
-          "Includes tokenization of premise-hypothesis pairs using DistilBERT tokenizer and provides real-time predictions with sub-second latency for custom examples[cite: 1].",
-      },
-    ],
-  },
+
   {
     id: "goemotions-bert-multi-label",
     slug: "goemotions-bert-multi-label",
@@ -430,55 +381,6 @@ export const PROJECTS_DATA: ProjectData[] = [
         title: "Evaluation Metrics and Custom Inference Pipeline",
         description:
           "Evaluates model accuracy using Macro F1 and Exact Match scores, and includes a predictive inference pipeline utilizing a sigmoid activation function with a class determination threshold of 0.3[cite: 2].",
-      },
-    ],
-  },
-  {
-    id: "finetuning-distilbert-agnews",
-    slug: "finetuning-distilbert-agnews",
-    name: "Fine-tuning DistilBERT on AG News Dataset",
-    description:
-      "A deep learning project focused on text classification using the AG News dataset[cite: 3]. The project implements fine-tuning on the pre-trained DistilBERT language model to classify news articles into four distinct categories[cite: 3].",
-    thumbnail: "/project-images/hugging-face/ag-news.png",
-    category: "Natural Language Processing",
-    date: "2026",
-    folderId: "case-studies",
-    liveDemo: "#",
-    github: "https://github.com/hiraeth12/finetuning-distilbert-agnews",
-    images: [
-      {
-        src: "/project-images/hugging-face/ag-news.png",
-        alt: "AG News Text Classification Dashboard",
-        caption: "News Category Classification Prediction Results",
-      },
-    ],
-    technologies: [
-      "Python",
-      "PyTorch",
-      "HuggingFace Transformers",
-      "DistilBERT",
-      "Scikit-learn",
-    ],
-    features: [
-      {
-        title: "Four-Category News Classification",
-        description:
-          "Classifies news article samples into World, Sports, Business, and Sci/Tech categories based on the sh0416/ag_news dataset[cite: 3].",
-      },
-      {
-        title: "Efficient DistilBERT Architecture",
-        description:
-          "Fine-tunes the distilbert-base-uncased model, which retains 97% of BERT's language understanding capabilities while being 40% smaller in size and 60% faster[cite: 3].",
-      },
-      {
-        title: "Optimized Training Configuration",
-        description:
-          "Utilizes GPU acceleration with mixed precision training (FP16), AdamW optimizer with 0.01 weight decay, and automatically saves the best performing model checkpoint[cite: 3].",
-      },
-      {
-        title: "Text Context Concatenation",
-        description:
-          "Performs preprocessing and tokenization by concatenating the news title and article description inputs to generate a richer context understanding with a sequence limit of 512 tokens[cite: 3].",
       },
     ],
   },
